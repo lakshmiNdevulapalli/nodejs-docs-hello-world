@@ -1,44 +1,34 @@
 pipeline{
     agent any
-    parameters {
-        choice(
-            choices: ['Develop', 'Stage', 'Prod'],
-            name: 'STAGE_TO_EXECUTE'
-        )
-    }
     stages{
-        stage('Origin'){
-            when{
-                expression{params.GIT_BRANCH_TO_EXECUTE == 'Develop'}
+        stage('origin'){
+            when {
+                branch 'orgin/*'
             }
-            steps{
-                stage('Develop-master'){
-                    when{
-                        expression{GIT_BRANCH == 'master'}
-                    }
+            parallel{
+                stage('Develop'){
                     steps{
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Prod'){
-                            echo 'Prod'
-                        }
+                        echo GIT_BRANCH
                     }
                 }
-                stage('Develop-Release'){
-                    when{
-                        expression{GIT_BRANCH == 'mockRel'}
+                stage('Prod'){
+                    when {
+                        branch 'master'
                     }
                     steps{
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Stage'){
-                            echo 'Stage'
-                        }
+                        echo "Production"
+                    }
+                }
+                stage('stage'){
+                    when{
+                        branch 'mockRel'
+                    }
+                    steps{
+                        echo "Stage"
                     }
                 }
             }
+
         }
     }
 }
