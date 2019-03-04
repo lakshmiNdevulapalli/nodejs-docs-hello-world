@@ -1,34 +1,30 @@
 pipeline{
     agent any
-    
     stages{
-        stage('Quick Build') {
-            steps {
-                echo 'Building'
+        stage('origin'){
+            when {
+                branch 'orgin/*'
             }
-        }
-        stage('Deploy to Dev') {
-            // when {
-            //     branch 'develop' 
-            // }
-            stages {
-                stage('Building Distributable Package') {
-                    steps {
-                        echo 'Building'
+            parallel{
+                stage('Develop'){
+                    steps{
+                        echo GIT_BRANCH
                     }
                 }
-                stage('Archiving Package') {
-                    steps {
-                        echo 'Archiving Aritfacts'
-                        archiveArtifacts artifacts: '/*.zip', fingerprint: true
+                stage('Prod'){
+                    when {
+                        branch 'master'
+                    }
+                    steps{
+                        echo "Production"
                     }
                 }
-                stage('Deploying Dev') {
-                    steps {
-                        echo 'Deploying'
-                        timeout(time:3, unit:'DAYS') {
-                            input message: "Approve build?"
-                        }
+                stage('stage'){
+                    when{
+                        branch 'mockRel'
+                    }
+                    steps{
+                        echo "Stage"
                     }
                 }
             }
