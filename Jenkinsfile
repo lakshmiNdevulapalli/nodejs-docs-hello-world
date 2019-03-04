@@ -2,26 +2,48 @@ pipeline{
     agent any
     stages{
         stage('Origin stage'){
+            when{
+                expression{
+                    return GIT_BRANCH =='origin/*'
+                }
+            }
             steps{
-                script{
-                    if(GIT_BRANCH =='origin/*'){
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Stage'){
-                            echo 'Stage'
-                        }
-                        stage('Prod'){
-                            echo 'Prod'
-                        }
-                    }if(GIT_BRANCH == 'mockRel'){
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Stage'){
-                            echo 'stage'
-                        }
-                    }
+                stage('Develop'){
+                    echo 'develop'
+                }
+                stage('Stage'){
+                    echo 'Stage'
+                }
+                stage('Prod'){
+                    echo 'Prod'
+                }
+            }
+
+            when{
+                expression{
+                    return GIT_BRANCH == 'origin/mockRel'
+                }
+            }
+            steps{
+                stage('Develop'){
+                    echo 'develop'
+                }
+                stage('Stage'){
+                    echo 'Stage'
+                }
+            }
+
+            when{
+                expression{
+                    return GIT_BRANCH =='origin/master'
+                }
+            }
+            steps{
+                stage('Develop'){
+                    echo 'develop'
+                }
+                stage('Prod'){
+                    echo 'Prod'
                 }
             }
             
