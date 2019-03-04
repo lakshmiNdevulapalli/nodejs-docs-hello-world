@@ -4,7 +4,9 @@ pipeline{
         stage('Origin stage'){
             steps{
                 script{
-                    sh 'git branch -r | awk \'{print $1}''
+                    if(GIT_BRANCH =='master'){
+                        echo 'Hello'
+                    }
                 }
             }
             
