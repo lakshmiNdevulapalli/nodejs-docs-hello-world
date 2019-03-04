@@ -1,32 +1,30 @@
 pipeline{
     agent any
-        stages{
-            stage('develop'){
-                steps{
-                    git branch: 'origin/**',
-                        credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
-                        url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git'
-                    sh 'npm install'
-                    sh 'npm install -g --save-dev @babel-cli'
+    stages{
+        stage('Origin stage'){
+            steps{
+                script{
+                    if(GIT_BRANCH =='origin/*'){
+                        stage('Develop'){
+                            echo 'develop'
+                        }
+                        stage('Stage'){
+                            echo 'Stage'
+                        }
+                        stage('Prod'){
+                            echo 'Prod'
+                        }
+                    }if(GIT_BRANCH == 'mockRel'){
+                        stage('Develop'){
+                            echo 'develop'
+                        }
+                        stage('Stage'){
+                            echo 'stage'
+                        }
+                    }
                 }
             }
-            stage('stage'){
-                steps{
-                    git branch: 'origin/mockRel/*',
-                        credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
-                        url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git'
-                    sh 'npm install'
-                    sh 'npm install -g --save-dev @babel-cli'
-                }
-        }
-        stage('prod'){
-                steps{
-                    git branch: 'origin/master',
-                        credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
-                        url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git'
-                    sh 'npm install || exit 1'
-                    sh 'npm install -g --save-dev @babel-cli'
-                }
+            
         }
     }
 }
