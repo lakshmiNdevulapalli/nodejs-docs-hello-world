@@ -1,9 +1,18 @@
 pipeline{
     agent any
+    parameters {
+        string (
+            defaultValue: '*',
+            description: '',
+            name: 'GIT_BRANCH_TO_EXECUTE'
+        )
+    }
     stages{
         stage('origin'){
             when {
-                branch 'master'
+                expression{
+                    GIT_BRANCH = "origin/${GIT_BRANCH_TO_EXECUTE}"
+                }
             }
             parallel{
                 stage('Develop'){
@@ -13,15 +22,19 @@ pipeline{
                 }
                 stage('Prod'){
                     when {
-                        branch 'master'
+                        expression{
+                            GIT_BRANCH = 'origin/master'
+                        }
                     }
                     steps{
                         echo "Production"
                     }
                 }
                 stage('stage'){
-                    when{
-                        branch 'mockRel'
+                    when {
+                        expression{
+                            GIT_BRANCH = 'origin/mockRel'
+                        }
                     }
                     steps{
                         echo "Stage"
