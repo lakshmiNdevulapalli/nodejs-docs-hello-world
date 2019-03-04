@@ -1,44 +1,38 @@
 pipeline{
     agent any
-    parameters {
-        choice(
-            choices: ['Develop', 'Stage', 'Prod'],
-            name: 'STAGE_TO_EXECUTE'
-        )
-    }
+    
     stages{
-        stage('Origin'){
-            when{
-                expression{params.GIT_BRANCH_TO_EXECUTE == 'Develop'}
+        stage('Quick Build') {
+            steps {
+                echo 'Building'
             }
-            stages{
-                stage('Develop-master'){
-                    when{
-                        expression{GIT_BRANCH == 'master'}
-                    }
-                    stages{
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Prod'){
-                            echo 'Prod'
-                        }
+        }
+        stage('Deploy to Dev') {
+            // when {
+            //     branch 'develop' 
+            // }
+            stages {
+                stage('Building Distributable Package') {
+                    steps {
+                        echo 'Building'
                     }
                 }
-                stage('Develop-Release'){
-                    when{
-                        expression{GIT_BRANCH == 'mockRel'}
+                stage('Archiving Package') {
+                    steps {
+                        echo 'Archiving Aritfacts'
+                        archiveArtifacts artifacts: '/*.zip', fingerprint: true
                     }
-                    stages{
-                        stage('Develop'){
-                            echo 'develop'
-                        }
-                        stage('Stage'){
-                            echo 'Stage'
+                }
+                stage('Deploying Dev') {
+                    steps {
+                        echo 'Deploying'
+                        timeout(time:3, unit:'DAYS') {
+                            input message: "Approve build?"
                         }
                     }
                 }
             }
+
         }
     }
 }
