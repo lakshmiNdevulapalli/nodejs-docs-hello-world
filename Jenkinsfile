@@ -4,9 +4,7 @@ pipeline{
         stage('Origin stage'){
             steps{
                 script{
-                    if("${env.JOB_NAME}" == "${env.BRANCH_NAME}"){
-                        echo "${env.BRANCH_NAME}"
-                    }
+                    sh 'git branch -r | awk \'{print $1}''
                 }
             }
             
