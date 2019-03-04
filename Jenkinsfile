@@ -11,12 +11,12 @@ pipeline{
             when{
                 expression{params.GIT_BRANCH_TO_EXECUTE == 'Develop'}
             }
-            steps{
+            stages{
                 stage('Develop-master'){
                     when{
                         expression{GIT_BRANCH == 'master'}
                     }
-                    steps{
+                    stages{
                         stage('Develop'){
                             echo 'develop'
                         }
@@ -29,7 +29,7 @@ pipeline{
                     when{
                         expression{GIT_BRANCH == 'mockRel'}
                     }
-                    steps{
+                    stages{
                         stage('Develop'){
                             echo 'develop'
                         }
