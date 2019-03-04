@@ -5,7 +5,7 @@ pipeline{
             steps{
                 script{
                     if(GIT_BRANCH =='master'){
-                        echo 'Hello'
+                        echo GIT_BRANCH
                     }
                 }
             }
