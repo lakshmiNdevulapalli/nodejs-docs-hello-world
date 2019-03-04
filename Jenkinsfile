@@ -1,17 +1,10 @@
 pipeline{
     agent any
-    parameters {
-        string (
-            defaultValue: '*',
-            description: '',
-            name: 'GIT_BRANCH_TO_EXECUTE'
-        )
-    }
     stages{
         stage('origin'){
             when {
                 expression{
-                    GIT_BRANCH = "origin/${GIT_BRANCH_TO_EXECUTE}"
+                    GIT_BRANCH = 'origin/*'
                 }
             }
             parallel{
