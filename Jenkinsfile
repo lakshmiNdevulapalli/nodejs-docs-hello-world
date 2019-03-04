@@ -1,7 +1,7 @@
 pipeline{
     agent any
         stages{
-            stage('Build'){
+            stage('develop'){
                 steps{
                     git branch: 'origin/**',
                         credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
@@ -10,14 +10,23 @@ pipeline{
                     sh 'npm install -g --save-dev @babel-cli'
                 }
             }
-            stage('Deploy'){
+            stage('stage'){
                 steps{
-                    git branch: 'origin/master',
+                    git branch: 'origin/mockRel/*',
                         credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
                         url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git'
                     sh 'npm install'
                     sh 'npm install -g --save-dev @babel-cli'
                 }
-            }
         }
+        stage('prod'){
+                steps{
+                    git branch: 'origin/master',
+                        credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
+                        url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git'
+                    sh 'npm install || exit 1'
+                    sh 'npm install -g --save-dev @babel-cli'
+                }
+        }
+    }
 }
