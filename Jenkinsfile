@@ -1,52 +1,44 @@
 pipeline{
     agent any
+    parameters {
+        choice(
+            choices: ['Develop', 'Stage', 'Prod'],
+            name: 'STAGE_TO_EXECUTE'
+        )
+    }
     stages{
-        stage('Origin stage'){
+        stage('Origin'){
             when{
-                expression{
-                    return GIT_BRANCH =='origin/*'
-                }
+                expression{params.GIT_BRANCH_TO_EXECUTE == 'Develop'}
             }
             steps{
-                stage('Develop'){
-                    echo 'develop'
+                stage('Develop-master'){
+                    when{
+                        expression{GIT_BRANCH == 'master'}
+                    }
+                    steps{
+                        stage('Develop'){
+                            echo 'develop'
+                        }
+                        stage('Prod'){
+                            echo 'Prod'
+                        }
+                    }
                 }
-                stage('Stage'){
-                    echo 'Stage'
-                }
-                stage('Prod'){
-                    echo 'Prod'
-                }
-            }
-
-            when{
-                expression{
-                    return GIT_BRANCH == 'origin/mockRel'
-                }
-            }
-            steps{
-                stage('Develop'){
-                    echo 'develop'
-                }
-                stage('Stage'){
-                    echo 'Stage'
-                }
-            }
-
-            when{
-                expression{
-                    return GIT_BRANCH =='origin/master'
+                stage('Develop-Release'){
+                    when{
+                        expression{GIT_BRANCH == 'mockRel'}
+                    }
+                    steps{
+                        stage('Develop'){
+                            echo 'develop'
+                        }
+                        stage('Stage'){
+                            echo 'Stage'
+                        }
+                    }
                 }
             }
-            steps{
-                stage('Develop'){
-                    echo 'develop'
-                }
-                stage('Prod'){
-                    echo 'Prod'
-                }
-            }
-            
         }
     }
 }
