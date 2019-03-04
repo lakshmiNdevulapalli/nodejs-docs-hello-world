@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('origin'){
             when {
-                branch 'orgin/*'
+                branch 'master'
             }
             parallel{
                 stage('Develop'){
