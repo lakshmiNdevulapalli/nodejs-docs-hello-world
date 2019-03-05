@@ -32,7 +32,7 @@ pipeline{
                         sh 'npm install'
                     }
                 }
-                stage('Compile'){
+                /*stage('Compile'){
                     steps{
                         sh 'npm run compile'
                     }
@@ -41,7 +41,7 @@ pipeline{
                     steps{
                         sh 'npm start'
                     }
-                }
+                }*/
 
             }
         }
@@ -54,7 +54,6 @@ pipeline{
             steps{
                 echo GIT_BRANCH
                 sh 'npm install'
-                sh 'node index.js'
             }
         }
         stage('Prod'){
