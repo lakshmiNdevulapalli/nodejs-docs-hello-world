@@ -26,16 +26,21 @@ pipeline{
                     return GIT_BRANCH == 'origin/master'
                 }
             }
-
-            parallel {
+            steps{
+                parallel {
                 stage('Dev'){
-                    echo 'dev'
+                    steps{
+                        echo 'dev'
+                    }
+                    
                 }
                 stage('Prod'){
-                    echo 'prod'
+                    steps{
+                        echo 'Prod'
+                    }
                 }
             }
-            
+            }
         }
     }
 }
