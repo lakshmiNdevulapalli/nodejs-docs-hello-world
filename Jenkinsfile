@@ -39,7 +39,7 @@ pipeline{
                         }
                     }
                 }
-                stage('Execute'){
+                /*stage('Execute'){
                     steps{
                         sh 'npm start'
                     }
