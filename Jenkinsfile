@@ -21,14 +21,28 @@ pipeline{
             }
         }
         stage('Develop'){ 
-            steps{
-                checkout([$class: 'GitSCM',
-                    branches: [[name: "origin/*"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    submoduleCfg: []])
-                echo GIT_BRANCH
-                sh 'npm install'
-                sh 'node index.js'
+            parallel{
+                stage('Build'){
+                    steps{
+                        checkout([$class: 'GitSCM',
+                                branches: [[name: "origin/*"]],
+                                doGenerateSubmoduleConfigurations: false,
+                                submoduleCfg: []])
+                        echo GIT_BRANCH
+                        sh 'npm install'
+                    }
+                }
+                stage('Compile'){
+                    steps{
+                        sh 'npm run compile'
+                    }
+                }
+                stage('Execute'){
+                    steps{
+                        sh 'npm start'
+                    }
+                }
+
             }
         }
         stage('Stage'){
