@@ -5,9 +5,7 @@
 pipeline{
     agent any
 /* Stages to differentiate Dev, Stage and Prod */
-    tools {
-        nodejs 'nodejs'
-    }
+    tools {nodejs "nodejs"}
     stages{
         stage('Develop'){ 
             steps{
@@ -16,7 +14,7 @@ pipeline{
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
-                sh 'npm install'
+                sh 'npm config ls'
             }
         }
         stage('Stage'){
@@ -27,7 +25,7 @@ pipeline{
             }
             steps{
                 echo GIT_BRANCH
-                sh 'npm install'
+                sh 'npm config ls'
             }
         }
         stage('Prod'){
@@ -38,7 +36,7 @@ pipeline{
             }
             steps{
                 echo GIT_BRANCH
-                sh 'npm install'
+                sh 'npm config ls'
             }
         }
     }
