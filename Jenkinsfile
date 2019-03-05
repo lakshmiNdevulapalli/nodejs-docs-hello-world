@@ -12,7 +12,8 @@ pipeline{
     stages{
         stage('Preparation'){
             steps{
-                sh 'npm install -g @babel/cli'
+                sh 'npm install -g @babel/core @babel/cli @babel/preset-env'
+                sh 'npm install -g @babel/polyfill'
             }
         }
         stage('Develop'){ 
