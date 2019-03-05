@@ -33,10 +33,8 @@ pipeline{
                     }
                 }
                 stage('Compile'){
-                    steps{
-                        if(GIT_BRANCH){
-                            echo 'Hello'
-                        }
+                    if(GIT_BRANCH){
+                        echo 'Hello'
                     }
                 }
                 /*stage('Execute'){
