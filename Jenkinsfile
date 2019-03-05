@@ -1,17 +1,11 @@
 pipeline{
     agent any
-    parameters {
-        string (
-            defaultValue: '*',
-            description: '',
-            name : 'BRANCH_PATTERN')
-    }
 
     stages{
         stage('Develop'){
             steps{
                 checkout([$class: 'GitSCM',
-                    branches: [[name: "origin/${BRANCH_PATTERN}"]],
+                    branches: [[name: "origin/*"]],
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
