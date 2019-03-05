@@ -10,7 +10,7 @@ pipeline{
             parallel{
                 stage('Develop'){
                     steps{
-                        echo GIT_BRANCH
+                        echo GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
                     }
                 }
                 stage('Prod'){
