@@ -24,9 +24,6 @@ pipeline{
                 }
             }
             steps{
-                checkout([
-                    branches: [["origin/"+GIT_BRANCH]]
-                ])
                 echo GIT_BRANCH
             }
         }
@@ -37,9 +34,6 @@ pipeline{
                 }
             }
             steps{
-                checkout([
-                    branches: [["origin/"+GIT_BRANCH]]
-                ])
                 echo GIT_BRANCH
             }
         }
