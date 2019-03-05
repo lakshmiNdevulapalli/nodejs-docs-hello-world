@@ -73,7 +73,7 @@ pipeline{
             slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
         }
         failure{
-            slackSend(color: '#cc0000', channel: '#smaple-project' message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
+            slackSend(color: '#cc0000', channel: '#sample-project' message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
         }
     }
 }
