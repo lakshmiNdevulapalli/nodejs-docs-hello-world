@@ -2,11 +2,7 @@ pipeline{
     agent any
     stages{
         stage('origin'){
-            when {
-                expression{
-                    GIT_BRANCH = 'origin/*'
-                }
-            }
+           
             parallel{
                 stage('Develop'){
                     steps{
