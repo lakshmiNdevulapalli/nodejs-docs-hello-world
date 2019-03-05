@@ -1,14 +1,18 @@
 pipeline{
     agent any
     parameters {
-        string(defaultValue: '*', name: 'CHECKOUT_BRANCH')
+        string (
+            defaultValue: '*',
+            description: '',
+            name : 'CHECKOUT_BRANCH')
     }
+
     stages{
         stage('Develop'){
             steps{
                 checkout([
-                    branches: [["origin/${CHECKOUT_BRANCH}"]],
-                    doGenerateSubmoduleConfigurations: false
+                    branches: [["origin/${CHECKOUT_BRANCH}"]]
+                    
                 ])
                 echo GIT_BRANCH
             }
@@ -21,8 +25,7 @@ pipeline{
             }
             steps{
                 checkout([
-                    branches: [["origin/"+GIT_BRANCH]],
-                    doGenerateSubmoduleConfigurations: false
+                    branches: [["origin/"+GIT_BRANCH]]
                 ])
                 echo GIT_BRANCH
             }
@@ -35,8 +38,7 @@ pipeline{
             }
             steps{
                 checkout([
-                    branches: [["origin/"+GIT_BRANCH]],
-                    doGenerateSubmoduleConfigurations: false
+                    branches: [["origin/"+GIT_BRANCH]]
                 ])
                 echo GIT_BRANCH
             }
