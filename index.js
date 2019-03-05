@@ -1,4 +1,4 @@
-var http = require('http');
+/* var http = require('http');
 
 var server = http.createServer(function(request, response) {
 
@@ -11,3 +11,10 @@ var port = process.env.PORT || 1337;
 server.listen(port);
 
 console.log("Server running at http://localhost:%d", port);
+ */
+
+var promise1 = new Promise(function(resolve, reject) {
+	etTimeout(function() {
+	  resolve('foo');
+	}, 300);
+  });

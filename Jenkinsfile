@@ -30,9 +30,10 @@ pipeline{
                                 submoduleCfg: []])
                         echo GIT_BRANCH
                         sh 'npm install'
+                        sh 'node index.js'
                     }
                 }
-                stage('Compile'){
+                /*stage('Compile'){
                     steps{
                         sh 'npm run compile'
                     }
@@ -41,7 +42,7 @@ pipeline{
                     steps{
                         sh 'npm start'
                     }
-                }
+                }*/
 
             }
         }
@@ -54,7 +55,6 @@ pipeline{
             steps{
                 echo GIT_BRANCH
                 sh 'npm install'
-                sh 'node index.js'
             }
         }
         stage('Prod'){
@@ -67,6 +67,14 @@ pipeline{
                 echo GIT_BRANCH
                 sh 'npm install'
             }
+        }
+    }
+    post{
+        success{
+            slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
+        }
+        failure{
+            slackSend(color: '#cc0000', channel: '#sample-project', message: "FAILED: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
         }
     }
 }
