@@ -30,7 +30,6 @@ pipeline{
                                 submoduleCfg: []])
                         echo GIT_BRANCH
                         sh 'npm install'
-                        sh 'node index.js'
                     }
                 }
                 /*stage('Compile'){
