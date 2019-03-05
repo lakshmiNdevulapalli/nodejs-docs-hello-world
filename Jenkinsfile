@@ -1,14 +1,22 @@
+/*
+* Jenkinsfile for LaunchDarkly Migration
+* Dev: Bala Venkata
+*/
 pipeline{
     agent any
-
+/* Stages to differentiate Dev, Stage and Prod */
+    tools {
+        nodejs 'nodejs'
+    }
     stages{
-        stage('Develop'){
+        stage('Develop'){ 
             steps{
                 checkout([$class: 'GitSCM',
                     branches: [[name: "origin/*"]],
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
+                sh 'npm install'
             }
         }
         stage('Stage'){
@@ -19,6 +27,7 @@ pipeline{
             }
             steps{
                 echo GIT_BRANCH
+                sh 'npm install'
             }
         }
         stage('Prod'){
@@ -29,6 +38,7 @@ pipeline{
             }
             steps{
                 echo GIT_BRANCH
+                sh 'npm install'
             }
         }
     }
