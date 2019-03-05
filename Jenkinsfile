@@ -10,6 +10,11 @@ pipeline{
 
 /* Stages to differentiate Dev, Stage and Prod */
     stages{
+        stage('Preparation'){
+            steps{
+                sh 'npm install -g @babel/cli'
+            }
+        }
         stage('Develop'){ 
             steps{
                 checkout([$class: 'GitSCM',
@@ -17,7 +22,8 @@ pipeline{
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
-                sh 'node -v'
+                //sh 'node -v'
+                
             }
         }
         stage('Stage'){
