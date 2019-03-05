@@ -1,40 +1,45 @@
 pipeline{
     agent any
+    parameters {
+        string(defaultValue: '*', name: 'CHECKOUT_BRANCH')
+    }
     stages{
-        stage('origin'){
-            when {
+        stage('Develop'){
+            steps{
+                checkout([
+                    branches: [["origin/${CHECKOUT_BRANCH}"]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
+            }
+        }
+        stage('Stage'){
+            when{
                 expression{
-                    GIT_BRANCH = "origin/master"
+                    GIT_BRANCH == 'mockRel'
                 }
             }
-            parallel{
-                stage('Develop'){
-                    steps{
-                        echo GIT_BRANCH
-                    }
-                }
-                stage('Prod'){
-                    when {
-                        expression{
-                            GIT_BRANCH = 'origin/master'
-                        }
-                    }
-                    steps{
-                        echo "Production"
-                    }
-                }
-                stage('stage'){
-                    when {
-                        expression{
-                            GIT_BRANCH = 'origin/mockRel'
-                        }
-                    }
-                    steps{
-                        echo "Stage"
-                    }
+            steps{
+                checkout([
+                    branches: [["origin/"+GIT_BRANCH]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
+            }
+        }
+        stage('Prod'){
+            when{
+                expression{
+                    GIT_BRANCH == 'master'
                 }
             }
-
+            steps{
+                checkout([
+                    branches: [["origin/"+GIT_BRANCH]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
+            }
         }
     }
 }
