@@ -23,7 +23,8 @@ pipeline{
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
-                //sh 'node -v'
+                sh 'npm install'
+                sh 'node index.js'
                 
             }
         }
@@ -36,6 +37,7 @@ pipeline{
             steps{
                 echo GIT_BRANCH
                 sh 'npm install'
+                sh 'node index.js'
             }
         }
         stage('Prod'){
