@@ -7,8 +7,6 @@ pipeline{
     tools {nodejs "nodejs"}
     //def nodejs = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
     //sh "${nodejs}/bin/node -v"
-    sh 'node -v'
-    sh "npm install -g --save-dev @babel/cli"
 
 /* Stages to differentiate Dev, Stage and Prod */
     stages{
@@ -19,7 +17,7 @@ pipeline{
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
-                sh 'npm install'
+                sh 'node -v'
             }
         }
         stage('Stage'){
