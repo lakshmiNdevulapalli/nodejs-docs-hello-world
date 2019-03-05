@@ -1,41 +1,45 @@
 pipeline{
     agent any
     parameters {
-        string (
-            defaultValue: '*',
-            name: 'BRANCH_PATTERN'
-        )
+        string(defaultValue: '*', name: 'CHECKOUT_BRANCH')
     }
     stages{
-        stage('Origin'){
+        stage('Develop'){
             steps{
-                checkout([$class: 'GitSCM',
-                    branches: [[name: "origin/${BRANCH_PATTERN}"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'LocalBranch']],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        credentialsId: 'c3396add-9145-4d12-98cf-ac4bbda2a47f',
-                        url: 'https://github.com/lakshmiNdevulapalli/nodejs-docs-hello-world.git']]])
+                checkout([
+                    branches: [["origin/${CHECKOUT_BRANCH}"]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
             }
         }
-        stage('Build'){
-            when {
-                expression {
-                    GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    return GIT_BRANCH == 'origin/master'
+        stage('Stage'){
+            when{
+                expression{
+                    GIT_BRANCH == 'mockRel'
                 }
             }
-
-            parallel {
-                stage('Dev'){
-                    echo 'dev'
-                }
-                stage('Prod'){
-                    echo 'prod'
+            steps{
+                checkout([
+                    branches: [["origin/"+GIT_BRANCH]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
+            }
+        }
+        stage('Prod'){
+            when{
+                expression{
+                    GIT_BRANCH == 'master'
                 }
             }
-            
+            steps{
+                checkout([
+                    branches: [["origin/"+GIT_BRANCH]],
+                    doGenerateSubmoduleConfigurations: false
+                ])
+                echo GIT_BRANCH
+            }
         }
     }
 }
