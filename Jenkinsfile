@@ -5,10 +5,10 @@
 pipeline{
     agent any
     tools {nodejs "nodejs"}
-    parameters {
+    /*parameters {
         string (defaultValue: '*', description: 'To identify any branch master/release for now depending on the stage',
                 name: 'GIT_ORIGIN_BRANCH_PATTERN')
-    }
+    }*/
     //def nodejs = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
     //sh "${nodejs}/bin/node -v"
 
@@ -23,7 +23,7 @@ pipeline{
         stage('Develop'){ 
             steps{
                 checkout([$class: 'GitSCM',
-                    branches: [[name: "origin/${GIT_ORIGIN_BRANCH_PATTERN}"]],
+                    branches: [[name: "origin/*"]],
                     doGenerateSubmoduleConfigurations: false,
                     submoduleCfg: []])
                 echo GIT_BRANCH
