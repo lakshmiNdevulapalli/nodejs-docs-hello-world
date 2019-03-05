@@ -29,7 +29,6 @@ pipeline{
                 echo GIT_BRANCH
                 sh 'npm install'
                 sh 'node index.js'
-                
             }
         }
         stage('Stage'){
