@@ -32,9 +32,11 @@ pipeline{
                         sh 'npm install'
                     }
                 }
-                /*stage('Compile'){
+                stage('Compile'){
                     steps{
-                        sh 'npm run compile'
+                        if(GIT_BRANCH){
+                            echo 'Hello'
+                        }
                     }
                 }
                 stage('Execute'){
