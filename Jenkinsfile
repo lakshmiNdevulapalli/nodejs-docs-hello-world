@@ -4,16 +4,16 @@ pipeline{
         string (
             defaultValue: '*',
             description: '',
-            name : 'CHECKOUT_BRANCH')
+            name : 'BRANCH_PATTERN')
     }
 
     stages{
         stage('Develop'){
             steps{
-                checkout([
-                    branches: [["origin/${CHECKOUT_BRANCH}"]]
-                    
-                ])
+                checkout([$class: 'GitSCM',
+                    branches: [[name: "origin/${BRANCH_PATTERN}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    submoduleCfg: []])
                 echo GIT_BRANCH
             }
         }
