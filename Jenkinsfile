@@ -32,11 +32,16 @@ pipeline{
                         sh 'npm install'
                     }
                 }
-                /*stage('Compile'){
+                stage('Compile'){
                     steps{
-                        sh 'npm run compile'
+                        script{
+                            def browsers = ['chrome', 'firefox']
+                            for(int i = 0; i < browsers.length; i++){
+                                echo "Testing scripts ${browsers[i]}"
+                            }
+                        }
                     }
-                }
+                }/*
                 stage('Execute'){
                     steps{
                         sh 'npm start'
@@ -65,19 +70,6 @@ pipeline{
             steps{
                 echo GIT_BRANCH
                 sh 'npm install'
-            }
-        }
-        stage('Deploy') {
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                }
-            }
-            steps {
-                echo "Hello, ${PERSON}, nice to meet you."
             }
         }
     }
