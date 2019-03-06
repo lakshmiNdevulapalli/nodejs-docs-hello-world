@@ -1,5 +1,5 @@
 var promise1 = new Promise(function(resolve, reject) {
-	etTimeout(function() {
+	setTimeout(function() {
 	  resolve('foo');
 	}, 300);
 	});
