@@ -34,10 +34,10 @@ pipeline{
                 }
                 stage('Compile'){
                     steps{
-                        script{
+                        script {
                             def browsers = ['chrome', 'firefox']
-                            for(int i = 0; i < browsers.length; i++){
-                                echo "Testing scripts ${browsers[i]}"
+                            for (int i = 0; i < browsers.size(); ++i) {
+                                echo "Testing the ${browsers[i]} browser"
                             }
                         }
                     }
