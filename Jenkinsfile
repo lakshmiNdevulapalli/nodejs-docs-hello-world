@@ -67,6 +67,14 @@ pipeline{
                 sh 'npm install'
             }
         }
+        stage('Deploy') {
+            steps {
+                echo "Deploy"
+            }
+            when {
+                triggeredBy 'Manual'
+            }
+        }
     }
     post{
         success{
