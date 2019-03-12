@@ -20,11 +20,11 @@ pipeline{
             }
         }
         stage('Develop'){ 
-            agent{
-                label 'build && linux'
-            }
             parallel{
                 stage('Build'){
+                    agent{
+                        label 'build && linux'
+                    }
                     steps{
                         def extWorkspace = exwsAllocate 'linux-disk-pool'
                         exws(extWorkspace){
