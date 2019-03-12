@@ -12,15 +12,15 @@ pipeline{
     //def nodejs = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
     //sh "${nodejs}/bin/node -v"
 
-/* Stages to differentiate Dev, Stage and Prod */
-    stages{
-        stage('Preparation'){
+    /* Stages to differentiate Dev, Stage and Prod */
+   stages{
+       stage('Preparation'){
             steps{
                 sh 'npm install -g @babel/core @babel/cli @babel/preset-env'
                 sh 'npm install -g @babel/polyfill'
             }
         }
-        stage('Develop'){ 
+        stage('Develop'){
             parallel{
                 stage('Build'){
                     //agent{
@@ -42,53 +42,53 @@ pipeline{
                     }
                 }
             }
-        }
-        stage('Stage'){
-            agent{
-                label 'build && linux'
-            }
-            when{
-                expression{
-                    GIT_BRANCH == 'mockRel'
+            stage('Stage'){
+                agent{
+                    label 'build && linux'
+                }
+                when{
+                    expression{
+                        GIT_BRANCH == 'mockRel'
+                    }
+                }
+                steps{
+                    script{
+                        def extWorkspace = exwsAllocate 'linux-disk-pool'
+                        exws(extWorkspace){
+                            echo GIT_BRANCH
+                            sh 'npm install'
+                            sh 'node index.js'
+                        }
+                    }
                 }
             }
-            steps{
-                script{
-                    def extWorkspace = exwsAllocate 'linux-disk-pool'
-                    exws(extWorkspace){
-                        echo GIT_BRANCH
-                        sh 'npm install'
-                        sh 'node index.js'
+            stage('Prod'){
+                when{
+                    expression{
+                        GIT_BRANCH == 'master'
+                    }
+                }
+                steps{
+                    echo GIT_BRANCH
+                    sh 'npm install'
+                }
+            }
+            stage('Deploy'){
+                agent{
+                    label 'linux && test'
+                }
+                steps{
+                    script{
+                        def extWorkspace = exwsAllocate 'linux-disk-pool'
+                        exws(extWorkspace){
+                            echo "Run npm test"
+                            sh "npm test"
+                        }   
                     }
                 }
             }
         }
-        stage('Prod'){
-            when{
-                expression{
-                    GIT_BRANCH == 'master'
-                }
-            }
-            steps{
-                echo GIT_BRANCH
-                sh 'npm install'
-            }
-        }
-        stage('Deploy'){
-            agent{
-                label 'linux && test'
-            }
-            steps{
-                script{
-                    def extWorkspace = exwsAllocate 'linux-disk-pool'
-                    exws(extWorkspace){
-                        echo "Run npm test"
-                        sh "npm test"
-                    }   
-                }
-            }
-        }
-    }
+   }    
 post{
     success{
         slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
