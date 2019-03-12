@@ -4,7 +4,6 @@
 */
 pipeline{
     tools {nodejs "nodejs"}
-    def extWorkspace = exwsAllocate 'linux-disk-pool'
     /*parameters {
         string (defaultValue: '*', description: 'To identify any branch master/release for now depending on the stage',
                 name: 'GIT_ORIGIN_BRANCH_PATTERN')
@@ -25,21 +24,21 @@ pipeline{
                 label 'build && linux'
             }
             parallel{
-                exws(extWorkspace){
-                    stage('Build'){
-                        steps{
+                stage('Build'){
+                    steps{
+                        def extWorkspace = exwsAllocate 'linux-disk-pool'
+                        exws(extWorkspace){
                             checkout([$class: 'GitSCM',
                                 branches: [[name: "origin/*"]],
                                 doGenerateSubmoduleConfigurations: false,
                                 submoduleCfg: []])
                             echo GIT_BRANCH
                             sh 'npm install'
-                            sh 'node index.js'
+                            sh 'node index.js'   
                         }
                     }
                 }
             }
-
         }
         stage('Stage'){
             when{
@@ -68,8 +67,8 @@ pipeline{
             agent{
                 label 'linux && test'
             }
-            exws(extWorkspace){
-                steps{
+            steps{
+                exws(extWorkspace){
                     echo "Run npm test"
                     sh "npm test"
                 }
