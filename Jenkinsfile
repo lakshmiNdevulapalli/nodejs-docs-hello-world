@@ -23,36 +23,44 @@ pipeline{
         stage('Develop'){ 
             parallel{
                 stage('Build'){
-                    agent{
-                        label 'build && linux'
-                    }
+                    //agent{
+                        //label 'build && linux'
+                    //}
                     steps{
-                        script{
-                            def extWorkspace = exwsAllocate 'linux-disk-pool'
-                            exws(extWorkspace){
+                        //script{
+                            //def extWorkspace = exwsAllocate 'linux-disk-pool'
+                            //exws(extWorkspace){
                                 checkout([$class: 'GitSCM',
                                     branches: [[name: "origin/*"]],
                                     doGenerateSubmoduleConfigurations: false,
                                     submoduleCfg: []])
                                 echo GIT_BRANCH
-                                sh 'npm install'
-                                sh 'node index.js'   
-                            }
+                                //sh 'npm install'
+                                //sh 'node index.js'   
+                            //}
                         }
                     }
                 }
             }
         }
         stage('Stage'){
+            agent{
+                label 'build && linux'
+            }
             when{
                 expression{
                     GIT_BRANCH == 'mockRel'
                 }
             }
             steps{
-                echo GIT_BRANCH
-                sh 'npm install'
-                //sh 'node index.js'
+                script{
+                    def extWorkspace = exwsAllocate 'linux-disk-pool'
+                    exws(extWorkspace){
+                        echo GIT_BRANCH
+                        sh 'npm install'
+                        sh 'node index.js'
+                    }
+                }
             }
         }
         stage('Prod'){
@@ -71,9 +79,12 @@ pipeline{
                 label 'linux && test'
             }
             steps{
-                exws(extWorkspace){
-                    echo "Run npm test"
-                    sh "npm test"
+                script{
+                    def extWorkspace = exwsAllocate 'linux-disk-pool'
+                    exws(extWorkspace){
+                        echo "Run npm test"
+                        sh "npm test"
+                    }   
                 }
             }
         }
