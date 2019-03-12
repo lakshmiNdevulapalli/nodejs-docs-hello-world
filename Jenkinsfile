@@ -3,8 +3,8 @@
 * Dev: Bala Venkata
 */
 pipeline{
-    agent any
     tools {nodejs "nodejs"}
+    def extWorkspace = exwsAllocate 'linux-disk-pool'
     /*parameters {
         string (defaultValue: '*', description: 'To identify any branch master/release for now depending on the stage',
                 name: 'GIT_ORIGIN_BRANCH_PATTERN')
@@ -21,30 +21,25 @@ pipeline{
             }
         }
         stage('Develop'){ 
+            agent{
+                label 'build && linux'
+            }
             parallel{
-                stage('Build'){
-                    steps{
-                        checkout([$class: 'GitSCM',
+                exws(extWorkspace){
+                    stage('Build'){
+                        steps{
+                            checkout([$class: 'GitSCM',
                                 branches: [[name: "origin/*"]],
                                 doGenerateSubmoduleConfigurations: false,
                                 submoduleCfg: []])
-                        echo GIT_BRANCH
-                        sh 'npm install'
-                        //sh 'node index.js'
+                            echo GIT_BRANCH
+                            sh 'npm install'
+                            sh 'node index.js'
+                        }
                     }
                 }
-                /*stage('Compile'){
-                    steps{
-                        
-                    }
-                }
-                stage('Execute'){
-                    steps{
-                        sh 'npm start'
-                    }
-                }*/
-
             }
+
         }
         stage('Stage'){
             when{
@@ -67,6 +62,17 @@ pipeline{
             steps{
                 echo GIT_BRANCH
                 sh 'npm install'
+            }
+        }
+        stage('Deploy'){
+            agent{
+                label 'linux && test'
+            }
+            exws(extWorkspace){
+                steps{
+                    echo "Run npm test"
+                    sh "npm test"
+                }
             }
         }
     }
