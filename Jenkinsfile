@@ -3,6 +3,7 @@
 * Dev: Bala Venkata
 */
 pipeline{
+    agent any
     tools {nodejs "nodejs"}
     /*parameters {
         string (defaultValue: '*', description: 'To identify any branch master/release for now depending on the stage',
