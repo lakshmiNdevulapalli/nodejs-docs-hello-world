@@ -38,7 +38,7 @@ pipeline{
                                 sh 'npm install'
                                 //sh 'node index.js'   
                             }
-                            build 'LaunchDarkly-Deployment-Strategy'
+                            build 'LaunchDarkly-Deploy-Strategy'
                         }
                     }
                 }
@@ -59,7 +59,7 @@ pipeline{
                             echo GIT_BRANCH
                             sh 'npm install'
                         }
-                        build 'LaunchDarkly-Deployment-Strategy'
+                        build 'LaunchDarkly-Deploy-Strategy'
                     }
                 }
             }
