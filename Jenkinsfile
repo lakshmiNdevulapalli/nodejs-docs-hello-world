@@ -38,6 +38,7 @@ pipeline{
                                 sh 'npm install'
                                 //sh 'node index.js'   
                             }
+                            build 'LaunchDarkly-Deploy-Strategy'
                         }
                     }
                 }
