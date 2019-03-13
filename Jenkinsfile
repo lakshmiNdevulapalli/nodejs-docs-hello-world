@@ -72,20 +72,6 @@ pipeline{
                     sh 'npm install'
                 }
             }
-            stage('Deploy'){
-                agent{
-                    label 'linux && test'
-                }
-                steps{
-                    script{
-                        def extWorkspace = exwsAllocate 'linux-disk-pool'
-                        exws(extWorkspace){
-                            echo "Run npm test"
-                            sh "npm test"
-                        }   
-                    }
-                }
-            }
         }
    }    
 post{
