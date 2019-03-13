@@ -35,49 +35,45 @@ pipeline{
                                     doGenerateSubmoduleConfigurations: false,
                                     submoduleCfg: []])
                                 echo GIT_BRANCH
-                                sh 'npm install'
+                                //sh 'npm install'
                                 //sh 'node index.js'   
                             }
-                            build 'LaunchDarkly-Deploy-Strategy'
                         }
                     }
                 }
             }
-            stage('Stage'){
-                agent{
-                    label 'build && linux'
+        }
+        stage('Stage'){
+            agent{
+                label 'build && linux'
+            }
+            when{
+                expression{
+                    GIT_BRANCH == 'mockRel'
                 }
-                when{
-                    expression{
-                        GIT_BRANCH == 'mockRel'
-                    }
-                }
-                steps{
-                    script{
-                        def extWorkspace = exwsAllocate 'linux-disk-pool'
-                        exws(extWorkspace){
-                            echo GIT_BRANCH
-                            sh 'npm install'
-                        }
-                        build 'LaunchDarkly-Deploy-Strategy'
+            }
+            steps{
+                script{
+                    def extWorkspace = exwsAllocate 'linux-disk-pool'
+                    exws(extWorkspace){
+                        echo GIT_BRANCH
+                        sh 'npm install'
                     }
                 }
             }
-            stage('Prod'){
-                agent{
-                    label 'build && linux'
-                }
-                when{
-                    expression{
-                        GIT_BRANCH == 'master'
-                    }
-                }
-                steps{
-                    echo GIT_BRANCH
-                    sh 'npm install'
+        }
+        stage('Prod'){
+            when{
+                expression{
+                    GIT_BRANCH == 'master'
                 }
             }
-        }   
+            steps{
+                echo GIT_BRANCH
+                sh 'npm install'
+            }
+        }
+    }   
     post{
         success{
             slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
