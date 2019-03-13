@@ -72,13 +72,13 @@ pipeline{
                     sh 'npm install'
                 }
             }
+        }   
+    post{
+        success{
+            slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
         }
-   }    
-post{
-    success{
-        slackSend(color: '#66ff33', channel: '#alerts', message: "SUCCESSFUL: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
-    }
-    failure{
-        slackSend(color: '#cc0000', channel: '#sample-project', message: "FAILED: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
+        failure{
+            slackSend(color: '#cc0000', channel: '#sample-project', message: "FAILED: JOB '${env.JOB_NAME} [${env.BUILD_NUMBER}]'(${env.BUILD_URL})")
+        }
     }
 }
