@@ -27,15 +27,15 @@ pipeline{
                         label 'build && linux'
                     }
                     steps{
-                        script{
-                            def extWorkspace = exwsAllocate 'linux-disk-pool'
-                            exws(extWorkspace){
-                                checkout([$class: 'GitSCM',
+                        checkout([$class: 'GitSCM',
                                     branches: [[name: "origin/*"]],
                                     doGenerateSubmoduleConfigurations: false,
                                     submoduleCfg: []])
-                                echo GIT_BRANCH
-                                //sh 'npm install'
+                        echo GIT_BRANCH
+                        script{
+                            def extWorkspace = exwsAllocate 'linux-disk-pool'
+                            exws(extWorkspace){
+                                sh 'npm install'
                                 //sh 'node index.js'   
                             }
                         }
