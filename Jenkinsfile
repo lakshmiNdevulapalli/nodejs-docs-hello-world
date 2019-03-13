@@ -5,12 +5,6 @@
 pipeline{
     agent any
     tools {nodejs "nodejs"}
-    /*parameters {
-        string (defaultValue: '*', description: 'To identify any branch master/release for now depending on the stage',
-                name: 'GIT_ORIGIN_BRANCH_PATTERN')
-    }*/
-    //def nodejs = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-    //sh "${nodejs}/bin/node -v"
 
     /* Stages to differentiate Dev, Stage and Prod */
    stages{
@@ -32,6 +26,10 @@ pipeline{
                                     doGenerateSubmoduleConfigurations: false,
                                     submoduleCfg: []])
                         echo GIT_BRANCH
+                        /**
+                        * Assign disk pool to capture the project and store as artifacts 
+                        * Re-use this artifact in the deployment stage. 
+                        */
                         script{
                             def extWorkspace = exwsAllocate 'linux-disk-pool'
                             exws(extWorkspace){
@@ -54,6 +52,10 @@ pipeline{
                 }
             }
             steps{
+                /**
+                * Assign disk pool to capture the project and store as artifacts 
+                * Re-use this artifact in the deployment stage. 
+                */
                 script{
                     def extWorkspace = exwsAllocate 'linux-disk-pool'
                     exws(extWorkspace){
@@ -70,8 +72,17 @@ pipeline{
                 }
             }
             steps{
-                echo GIT_BRANCH
-                sh 'npm install'
+                /**
+                * Assign disk pool to capture the project and store as artifacts 
+                * Re-use this artifact in the deployment stage. 
+                */
+                script{
+                    def extWorkspace = exwsAllocate 'linux-disk-pool'
+                    exws(extWorkspace){
+                        echo GIT_BRANCH
+                        sh 'npm install'
+                    }
+                }
             }
         }
     }   
