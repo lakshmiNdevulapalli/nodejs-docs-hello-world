@@ -27,17 +27,18 @@ pipeline{
                         label 'build && linux'
                     }
                     steps{
-                        //script{
-                            //def extWorkspace = exwsAllocate 'linux-disk-pool'
-                            //exws(extWorkspace){
+                        script{
+                            def extWorkspace = exwsAllocate 'linux-disk-pool'
+                            exws(extWorkspace){
                                 checkout([$class: 'GitSCM',
                                     branches: [[name: "origin/*"]],
                                     doGenerateSubmoduleConfigurations: false,
                                     submoduleCfg: []])
                                 echo GIT_BRANCH
-                                //sh 'npm install'
+                                sh 'npm install'
                                 //sh 'node index.js'   
-                            //}
+                            }
+                            build 'LaunchDarkly-Deployment-Strategy'
                         }
                     }
                 }
@@ -58,6 +59,7 @@ pipeline{
                             echo GIT_BRANCH
                             sh 'npm install'
                         }
+                        build 'LaunchDarkly-Deployment-Strategy'
                     }
                 }
             }
