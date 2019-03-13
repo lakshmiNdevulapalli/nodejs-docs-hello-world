@@ -62,6 +62,9 @@ pipeline{
                 }
             }
             stage('Prod'){
+                agent{
+                    label 'build && linux'
+                }
                 when{
                     expression{
                         GIT_BRANCH == 'master'
