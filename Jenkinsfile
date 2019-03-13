@@ -23,9 +23,9 @@ pipeline{
         stage('Develop'){
             parallel{
                 stage('Build'){
-                    //agent{
-                        //label 'build && linux'
-                    //}
+                    agent{
+                        label 'build && linux'
+                    }
                     steps{
                         //script{
                             //def extWorkspace = exwsAllocate 'linux-disk-pool'
