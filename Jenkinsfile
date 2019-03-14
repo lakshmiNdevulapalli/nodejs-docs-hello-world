@@ -65,10 +65,13 @@ pipeline{
                     def first = jobName[0..11]
                     def last = jobName[13..19]
                     def path = first+"_"+last
+
+                    def workspace = env.WORKSPACE
+                    def head =  workspace[0..24]
                     exws(extWorkspace){
                         echo GIT_BRANCH
                         sh 'npm install'
-                        sh "node /home/ec2-user/workspace/'${path}'/index.js" 
+                        sh "node '${head}${path}'/index.js" 
                     }
                     build 'LaunchDarkly-Deploy-Strategy'
                 }
