@@ -34,7 +34,7 @@ pipeline{
                             def extWorkspace = exwsAllocate 'linux-disk-pool'
                             exws(extWorkspace){
                                 sh 'npm install'
-                                sh "node /home/ec2-user/workspace/'${env.JOB_NAME}'/index.js" 
+                                sh "node /home/ec2-user/workspace_'${env.JOB_NAME}'/index.js" 
                             }
                             build 'LaunchDarkly-Deploy-Strategy'
                         }
