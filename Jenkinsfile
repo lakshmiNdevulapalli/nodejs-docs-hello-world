@@ -61,11 +61,11 @@ pipeline{
                     def jobName = env.JOB_NAME
                     def first = jobName[0..11]
                     def last = jobName[13..19]
-                    echo first+"_"+last
+                    def path = first+"_"+last
                     exws(extWorkspace){
                         echo GIT_BRANCH
                         sh 'npm install'
-                        //sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
+                        sh "node /home/ec2-user/workspace/'{path}'/index.js" 
                     }
                     build 'LaunchDarkly-Deploy-Strategy'
                 }
