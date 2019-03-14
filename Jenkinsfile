@@ -65,7 +65,7 @@ pipeline{
                     exws(extWorkspace){
                         echo GIT_BRANCH
                         sh 'npm install'
-                        sh "node /home/ec2-user/workspace/'{path}'/index.js" 
+                        sh "node /home/ec2-user/workspace/'${path}'/index.js" 
                     }
                     build 'LaunchDarkly-Deploy-Strategy'
                 }
