@@ -35,7 +35,7 @@ pipeline{
                             exws(extWorkspace){
                                 sh 'npm install'
                                 //sh "node /home/ec2-user/workspace/'${env.JOB_NAME}'/index.js" 
-                                echo exws.getPathOnDisk()
+                                echp $PATH
                             }
                             build 'LaunchDarkly-Deploy-Strategy'
                         }
