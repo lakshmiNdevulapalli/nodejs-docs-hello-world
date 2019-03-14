@@ -58,10 +58,14 @@ pipeline{
                 */
                 script{
                     def extWorkspace = exwsAllocate 'linux-disk-pool'
+                    def jobName = env.JOB_NAME
+                    def first = jobName[0..12]
+                    def last = jobName[14..20]
+                    echo first+"_"+last
                     exws(extWorkspace){
                         echo GIT_BRANCH
                         sh 'npm install'
-                        sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
+                        //sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
                     }
                     build 'LaunchDarkly-Deploy-Strategy'
                 }
