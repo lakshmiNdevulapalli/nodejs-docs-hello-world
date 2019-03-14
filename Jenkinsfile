@@ -27,14 +27,14 @@ pipeline{
                         */
                         script{
                             def extWorkspace = exwsAllocate 'linux-disk-pool'
+                            def jobName = env.JOB_NAME
+                            def first = jobName[0..11]
+                            def last = jobName[13..19]
+                            def path = first+"_"+last
                             exws(extWorkspace){
-                                //checkout([$class: 'GitSCM',
-                                  //  branches: [[name: "origin/*"]],
-                                    //doGenerateSubmoduleConfigurations: false,
-                                    //submoduleCfg: []])
-                                //echo GIT_BRANCH
-                                //sh 'npm install'
-                                //sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
+                                echo GIT_BRANCH
+                                sh 'npm install'
+                                sh "node /home/ec2-user/workspace/'${path}'/index.js" 
                             }
                             build 'LaunchDarkly-Deploy-Strategy'
                         }
