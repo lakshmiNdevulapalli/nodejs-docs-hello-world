@@ -21,11 +21,6 @@ pipeline{
                         label 'build && linux'
                     }
                     steps{
-                        checkout([$class: 'GitSCM',
-                                    branches: [[name: "origin/*"]],
-                                    doGenerateSubmoduleConfigurations: false,
-                                    submoduleCfg: []])
-                        echo GIT_BRANCH
                         /**
                         * Assign disk pool to capture the project and store as artifacts 
                         * Re-use this artifact in the deployment stage. 
@@ -33,9 +28,13 @@ pipeline{
                         script{
                             def extWorkspace = exwsAllocate 'linux-disk-pool'
                             exws(extWorkspace){
+                                checkout([$class: 'GitSCM',
+                                    branches: [[name: "origin/*"]],
+                                    doGenerateSubmoduleConfigurations: false,
+                                    submoduleCfg: []])
+                                echo GIT_BRANCH
                                 sh 'npm install'
-                                sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
-                                //echo $PATH
+                                //sh "node /home/ec2-user/workspace/LaunchDarkly_mockRel/index.js" 
                             }
                             build 'LaunchDarkly-Deploy-Strategy'
                         }
