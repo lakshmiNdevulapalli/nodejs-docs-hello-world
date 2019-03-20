@@ -37,7 +37,8 @@ pipeline{
                             exws(extWorkspace){
                                 echo GIT_BRANCH
                                 sh 'npm install'
-                                sh "node '${head}${path}'/index.js" 
+                                //sh "node '${head}${path}'/index.js" 
+                                sh 'node -v'
                             }
                             build 'LaunchDarkly-Deploy-Strategy'
                         }
@@ -71,7 +72,7 @@ pipeline{
                     exws(extWorkspace){
                         echo GIT_BRANCH
                         sh 'npm install'
-                        sh "node '${head}${path}'/index.js" 
+                        sh "node -v" 
                     }
                     build 'LaunchDarkly-Deploy-Strategy'
                 }
