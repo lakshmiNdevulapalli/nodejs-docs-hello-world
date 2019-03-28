@@ -54,6 +54,7 @@ pipeline {
                 }
             }
             steps {
+                input message: 'Manual trigger -> Staging'
                 /**
                 * Assign disk pool to capture the project and store as artifacts 
                 * Re-use this artifact in the deployment stage. 
@@ -83,6 +84,7 @@ pipeline {
                 }
             }
             steps {
+                input message: 'Manual trigger -> Prod'
                 /**
                 * Assign disk pool to capture the project and store as artifacts 
                 * Re-use this artifact in the deployment stage. 
